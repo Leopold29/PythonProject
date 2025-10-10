@@ -2,21 +2,18 @@
 name = "banking-masker"
 version = "0.1.0"
 description = "Маскировка номеров карт и счетов"
-authors = ["leva_zet@mail.ru"]
+authors = ["Лев <leva_zet@mail.ru>"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 prompt = "^0.4.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^8.4.2"
 flake8 = "^7.3.0"
 mypy = "^1.18.2"
 black = "^25.9.0"
 isort = "^6.1.0"
-
-[tool.poetry.scripts]
-
 
 [build-system]
 requires = ["poetry-core"]

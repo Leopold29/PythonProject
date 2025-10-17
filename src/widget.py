@@ -1,22 +1,30 @@
-from masks import mask_card, mask_account
+from datetime import datetime
+from mask import get_mask_account, get_mask_card_number
 
-
-def mask_account_card(info_str: str) -> str:
+def get_date(date_str):
     """
-    Определяет тип информации (карта или счет) и применяет соответствующую маскировку.
+    Преобразует строку даты в формат 'день.месяц.год'.
+
+    Args:
+        date_str (str): Строка даты в формате '2024-03-11'.
+
+    Returns:
+        str: Дата в формате 'дд.мм.гггг'.
     """
-    info_str = info_str.strip()
-    parts = info_str.split()
+    dt = datetime.fromisoformat(date_str)
+    return dt.strftime("%d.%m.%Y")
 
-    # Проверка: первая часть может быть "Счет" или название карты
-    first_word = parts[0].lower()
+# Ваши исходные данные
+card = "7000792289606361"  # номер карты
+account = "73654108430135874305"  # номер счета
+date_str = "2024-03-11"  # строка даты
 
-    # Если первый элемент "Счет" или "счет"
-    if first_word == "счет":
-        # Объединяем оставшуюся часть для функции
-        account_info = " ".join(parts)
-        return mask_account(account_info)
-    else:
-        # Предполагаем, что это карта
-        card_info = " ".join(parts)
-        return mask_card(card_info)
+# Маскируем данные
+masked_account = get_mask_account(account)
+masked_card = get_mask_card_number(card)
+formatted_date = get_date(date_str)
+
+# Выводим отформатированные и маскированные данные
+print(f"Visa Platinum: {masked_card}")
+print(f"Счет: {masked_account}")
+print(f"Дата: {formatted_date}")

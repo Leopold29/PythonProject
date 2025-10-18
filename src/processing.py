@@ -1,38 +1,52 @@
 from typing import List, Dict, Any
+from datetime import datetime
 
-def filter_by_state(
-    transactions: List[Dict[str, Any]],
-    state: str = 'EXECUTED'
-) -> List[Dict[str, Any]]:
+def filter_by_state(items: List[Dict[str, Any]], target_state: str) -> List[Dict[str, Any]]:
     """
-    Фильтрует список транзакций по значению ключа 'state'.
+    Фильтрует список элементов по заданному состоянию.
 
     Args:
-        transactions (List[Dict[str, Any]]): список словарей с данными о транзакциях.
-        state (str, optional): значение, по которому фильтруются транзакции. По умолчанию 'EXECUTED'.
+        items: список словарей, каждый из которых должен содержать ключ 'state'.
+        target_state: строка, по которой осуществляется фильтрация.
+                      Возвращаются только те элементы, у которых 'state' равно target_state.
 
     Returns:
-        List[Dict[str, Any]]: отфильтрованный список транзакций.
+        Список словарей, удовлетворяющих условию фильтрации.
     """
-    return [transaction for transaction in transactions if transaction.get('state') == state]
+    return [item for item in items if item.get('state') == target_state]
 
-
-def sort_by_date(
-    transactions: List[Dict[str, Any]],
-    reverse: bool = True
-) -> List[Dict[str, Any]]:
+def sort_by_date(items: List[Dict[str, Any]], date_field: str = 'date') -> List[Dict[str, Any]]:
     """
-    Сортирует список транзакций по дате.
+    Сортирует список элементов по дате, указанной в поле date_field.
 
     Args:
-        transactions (List[Dict[str, Any]]): список словарей с данными о транзакциях.
-        reverse (bool, optional): порядок сортировки. По умолчанию True (по убыванию).
+        items: список словарей, каждый из которых должен содержать ключ, указанный в параметре date_field.
+        date_field: название поля, по которому нужно сортировать. По умолчанию 'date'.
 
     Returns:
-        List[Dict[str, Any]]: отсортированный список транзакций.
+        Отсортированный список словарей по возрастанию даты.
     """
     return sorted(
-        transactions,
-        key=lambda x: x.get('date', ''),
-        reverse=reverse
+        items,
+        key=lambda item: datetime.fromisoformat(item[date_field])
     )
+
+# Пример данных
+data = [
+    {'id': 1, 'state': 'active', 'date': '2025-10-10T10:00:00'},
+    {'id': 2, 'state': 'inactive', 'date': '2025-10-09T09:00:00'},
+    {'id': 3, 'state': 'active', 'date': '2025-10-11T11:00:00'},
+    {'id': 4, 'state': 'inactive', 'date': '2025-10-18T08:00:00'},
+]
+
+# Фильтрация по состоянию 'active'
+filtered_active = filter_by_state(data, 'active')
+print("Фильтр по состоянию 'active':")
+for item in filtered_active:
+    print(item)
+
+# Сортировка всех данных по дате
+sorted_data = sort_by_date(data)
+print("\nДанные отсортированы по дате:")
+for item in sorted_data:
+    print(item)

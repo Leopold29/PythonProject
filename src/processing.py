@@ -1,52 +1,52 @@
-from typing import List, Dict, Any
-from datetime import datetime
-
-def filter_by_state(items: List[Dict[str, Any]], target_state: str) -> List[Dict[str, Any]]:
+def filter_by_state(transactions, state='EXECUTED'):
     """
-    Фильтрует список элементов по заданному состоянию.
+    Фильтрует список транзакций по заданному состоянию.
 
     Args:
-        items: список словарей, каждый из которых должен содержать ключ 'state'.
-        target_state: строка, по которой осуществляется фильтрация.
-                      Возвращаются только те элементы, у которых 'state' равно target_state.
+        transactions (list of dict): Список транзакций, где каждая транзакция — словарь.
+        state (str): Статус транзакции для фильтрации (по умолчанию 'EXECUTED').
 
     Returns:
-        Список словарей, удовлетворяющих условию фильтрации.
+        list of dict: Новый список транзакций, где 'state' совпадает с заданным.
     """
-    return [item for item in items if item.get('state') == target_state]
+    return [transaction for transaction in transactions if transaction.get('state') == state]
 
-def sort_by_date(items: List[Dict[str, Any]], date_field: str = 'date') -> List[Dict[str, Any]]:
+
+def sort_by_date(transactions, reverse=True):
     """
-    Сортирует список элементов по дате, указанной в поле date_field.
+    Сортирует список транзакций по дате.
 
     Args:
-        items: список словарей, каждый из которых должен содержать ключ, указанный в параметре date_field.
-        date_field: название поля, по которому нужно сортировать. По умолчанию 'date'.
+        transactions (list of dict): Список транзакций.
+        reverse (bool): Если True, сортировка по убыванию (последняя дата первая).
 
     Returns:
-        Отсортированный список словарей по возрастанию даты.
+        list of dict: Отсортированный список транзакций по дате.
     """
-    return sorted(
-        items,
-        key=lambda item: datetime.fromisoformat(item[date_field])
-    )
+    return sorted(transactions, key=lambda x: x.get('date', ''), reverse=reverse)
 
-# Пример данных
-data = [
-    {'id': 1, 'state': 'active', 'date': '2025-10-10T10:00:00'},
-    {'id': 2, 'state': 'inactive', 'date': '2025-10-09T09:00:00'},
-    {'id': 3, 'state': 'active', 'date': '2025-10-11T11:00:00'},
-    {'id': 4, 'state': 'inactive', 'date': '2025-10-18T08:00:00'},
+
+# Пример входных данных
+transactions = [
+    {'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
+    {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'},
+    {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},
+    {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}
 ]
 
-# Фильтрация по состоянию 'active'
-filtered_active = filter_by_state(data, 'active')
-print("Фильтр по состоянию 'active':")
-for item in filtered_active:
-    print(item)
+# Использование filter_by_state по умолчанию ('EXECUTED')
+filtered_executed = filter_by_state(transactions)
+print("Фильтр по статусу 'EXECUTED':")
+print(filtered_executed)
 
-# Сортировка всех данных по дате
-sorted_data = sort_by_date(data)
-print("\nДанные отсортированы по дате:")
-for item in sorted_data:
-    print(item)
+
+# Использование filter_by_state с другим статусом
+filtered_canceled = filter_by_state(transactions, 'CANCELED')
+print("\nФильтр по статусу 'CANCELED':")
+print(filtered_canceled)
+
+
+# Использование sort_by_date (по убыванию)
+sorted_transactions = sort_by_date(transactions)
+print("\nОтсортированный по дате (по убыванию):")
+print(sorted_transactions)

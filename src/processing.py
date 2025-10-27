@@ -1,29 +1,25 @@
-def filter_by_state(transactions, state='EXECUTED'):
+from typing import Dict, List
+
+
+def filter_by_state(transactions: List[Dict], state: str = 'EXECUTED') -> List[Dict]:
     """
     Фильтрует список транзакций по заданному состоянию.
-
-    Args:
-        transactions (list of dict): Список транзакций, где каждая транзакция — словарь.
-        state (str): Статус транзакции для фильтрации (по умолчанию 'EXECUTED').
-
-    Returns:
-        list of dict: Новый список транзакций, где 'state' совпадает с заданным.
     """
-    return [transaction for transaction in transactions if transaction.get('state') == state]
+    return [
+        transaction for transaction in transactions
+        if transaction.get('state') == state
+    ]
 
 
-def sort_by_date(transactions, reverse=True):
+def sort_by_date(transactions: List[Dict], reverse: bool = True) -> List[Dict]:
     """
     Сортирует список транзакций по дате.
-
-    Args:
-        transactions (list of dict): Список транзакций.
-        reverse (bool): Если True, сортировка по убыванию (последняя дата первая).
-
-    Returns:
-        list of dict: Отсортированный список транзакций по дате.
     """
-    return sorted(transactions, key=lambda x: x.get('date', ''), reverse=reverse)
+    return sorted(
+        transactions,
+        key=lambda x: x.get('date', ''),
+        reverse=reverse
+    )
 
 
 # Пример входных данных
@@ -39,12 +35,10 @@ filtered_executed = filter_by_state(transactions)
 print("Фильтр по статусу 'EXECUTED':")
 print(filtered_executed)
 
-
 # Использование filter_by_state с другим статусом
 filtered_canceled = filter_by_state(transactions, 'CANCELED')
 print("\nФильтр по статусу 'CANCELED':")
 print(filtered_canceled)
-
 
 # Использование sort_by_date (по убыванию)
 sorted_transactions = sort_by_date(transactions)

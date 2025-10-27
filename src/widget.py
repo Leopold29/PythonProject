@@ -1,7 +1,9 @@
 from datetime import datetime
-from mask import get_mask_account, get_mask_card_number
 
-def get_date(date_str):
+from src.mask import get_mask_account, get_mask_card_number
+
+
+def get_date(date_str: str) -> str:
     """
     Преобразует строку даты в формат 'день.месяц.год'.
 
@@ -13,6 +15,7 @@ def get_date(date_str):
     """
     dt = datetime.fromisoformat(date_str)
     return dt.strftime("%d.%m.%Y")
+
 
 # Ваши исходные данные
 card = "7000792289606361"  # номер карты

@@ -28,3 +28,11 @@ pip install -r requirements.txt
 ## Лицензия:
 
 Этот проект лицензирован по [лицензии MIT](LICENSE).
+
+## Тестирование:
+
+Для запуска тестов используйте следующую команду:
+```
+coverage run -m pytest
+coverage html
+```

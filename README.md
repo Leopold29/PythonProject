@@ -28,3 +28,41 @@ pip install -r requirements.txt
 ## Лицензия:
 
 Этот проект лицензирован по [лицензии MIT](LICENSE).
+
+## Модуль generators:
+В рамках модуля generators реализованы следующие функции:
+
+### filter_by_currency(transactions, currency_code) — фильтрует список транзакций по заданной валюте, возвращая итератор.
+### transaction_descriptions(transactions) — генератор, возвращающий описание каждой транзакции.
+### card_number_generator(start, stop) — генератор номеров карт в диапазоне, формата XXXX XXXX XXXX XXXX.
+
+### Примеры использования:
+```
+from src import generators
+
+transactions = [...]  # ваш список транзакций
+```
+### Фильтрация транзакций по валюте USD
+```
+usd_transactions = generators.filter_by_currency(transactions, "USD")
+for t in usd_transactions:
+    print(t)
+```
+### Получение описаний транзакций
+```
+descriptions = generators.transaction_descriptions(transactions)
+for desc in descriptions:
+    print(desc)
+```
+### Генерация номеров карт в диапазоне
+```
+for card in generators.card_number_generator(1, 3):
+    print(card)
+```
+## Тестирование:
+
+Для запуска тестов используйте следующую команду:
+```
+coverage run -m pytest
+coverage html
+```

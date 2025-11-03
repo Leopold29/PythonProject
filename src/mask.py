@@ -1,5 +1,6 @@
 from typing import Union
 
+
 def get_mask_card_number(card_number: Union[int, str]) -> str:
     """
     Маскирует номер карты в формате: XXXX XX** **** XXXX
@@ -18,6 +19,7 @@ def get_mask_card_number(card_number: Union[int, str]) -> str:
     masked_card = f"{first_four} {next_two}** **** {last_four}"
     return masked_card
 
+
 def get_mask_account(account_number: Union[int, str]) -> str:
     """
     Маскирует номер счёта в формате: **XXXX
@@ -26,6 +28,7 @@ def get_mask_account(account_number: Union[int, str]) -> str:
     number_str = str(account_number).replace(" ", "")
     last_four = number_str[-4:]
     return f"**{last_four}"
+
 
 if __name__ == "__main__":
     # Пример данных для теста

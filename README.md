@@ -29,12 +29,14 @@ pip install -r requirements.txt
 
 Этот проект лицензирован по [лицензии MIT](LICENSE).
 
-## Модуль generators:
+## Модуль generators — новые функции и генераторы:
 В рамках модуля generators реализованы следующие функции:
 
 ### filter_by_currency(transactions, currency_code) — фильтрует список транзакций по заданной валюте, возвращая итератор.
 ### transaction_descriptions(transactions) — генератор, возвращающий описание каждой транзакции.
 ### card_number_generator(start, stop) — генератор номеров карт в диапазоне, формата XXXX XXXX XXXX XXXX.
+### mask_card_number(card_number) — функция для маскировки номера карты, отображая только последние 4 цифры.
+### generate_random_transactions(count) — генератор, создающий случайные транзакции для тестирования.
 
 ### Примеры использования:
 ```

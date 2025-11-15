@@ -1,0 +1,14 @@
+[
+  {
+    "operationAmount": {
+      "amount": 1000,
+      "currency": {
+        "code": "USD"
+      }
+    },
+    "date": "2024-04-27T10:00:00",
+    "description": "Test payment",
+    "from": "Account1",
+    "to": "Account2"
+  }
+]

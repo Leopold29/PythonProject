@@ -24,16 +24,18 @@ def get_exchange_rate(from_currency: str, to_currency: str = "RUB") -> float:
 
 def convert_currency(transaction: Dict) -> float:
     """
-    Конвертирует сумму транзакции в рубли.
-    Если валюта USD или EUR, обращается к API за курсом.
+    Конвертирует сумму транзакции в рубли, учитывая структуру с operationAmount.
     """
-    amount = transaction.get("amount", 0)
-    currency = transaction.get("currency")
-    if currency == "RUB":
+    operation_amount = transaction.get("operationAmount", {})
+    amount = operation_amount.get("amount", 0)
+    currency_info = operation_amount.get("currency", {})
+    currency_code = currency_info.get("code")
+
+    if currency_code == "RUB":
         return float(amount)
-    elif currency in ("USD", "EUR"):
-        rate = get_exchange_rate(currency)
+    elif currency_code in ("USD", "EUR"):
+        rate = get_exchange_rate(currency_code)
         return float(amount) * rate
     else:
-        # Неизвестная валюта, возвращаем 0 или бросаем исключение
+        # Неизвестная валюта
         return 0.0

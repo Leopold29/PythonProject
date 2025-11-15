@@ -43,3 +43,4 @@ def convert_currency(transaction: Dict) -> float:
     else:
         # Неизвестная валюта
         return 0.0
+    

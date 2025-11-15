@@ -68,3 +68,25 @@ for card in generators.card_number_generator(1, 3):
 coverage run -m pytest
 coverage html
 ```
+
+## Логирование вызовов функций с декоратором log
+## Для отслеживания выполнения функций в проекте используется декоратор log. Он помогает логировать вызовы, входные параметры, результаты и ошибки.
+
+## Основные возможности:
+Логирование в файл или в консоль
+Автоматическое добавление временных меток
+Фильтрация логов по уровню (ALL, ERROR, SUCCESS)
+
+## Пример использования:
+```
+from src.decorators import log
+
+@log(filename="app.log", log_time=True, log_level="ALL")
+def process_data(data):
+    pass
+```
+## Как это работает:
+
+filename: путь к файлу логов (если не указан — лог в консоль)
+log_time: добавлять ли временную метку
+log_level: уровень логирования (ALL, ERROR, SUCCESS)

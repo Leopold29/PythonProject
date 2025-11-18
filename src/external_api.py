@@ -1,45 +1,19 @@
-import os
-from dotenv import load_dotenv
 import requests
-from typing import Dict
-
-# Загружаем переменные окружения
-load_dotenv()
-
-API_URL = "https://api.apilayer.com/exchangerates_data/convert"
-API_ACCESS_KEY = os.getenv("API_ACCESS_KEY")
 
 
-def get_exchange_rate(from_currency: str, to_currency: str = "RUB") -> float:
+def fetch_exchange_rate(currency_code: str) -> float:
     """
-    Получает текущий курс обмена с API.
-    """
-    headers = {"apikey": API_ACCESS_KEY}
-    params: Dict[str, str] = {
-        "from": from_currency,
-        "to": to_currency,
-        "amount": "1",
-    }
-    response = requests.get(API_URL, headers=headers, params=params)
-    response.raise_for_status()
-    data = response.json()
-    return data.get("result", 0.0)
+    Получает курс обмена указанной валюты к рублю через внешний API.
 
+    Args:
+        currency_code (str): Трехбуквенный код валюты (например, 'USD', 'EUR').
 
-def convert_currency(transaction: Dict) -> float:
+    Returns:
+        float: Курс обмена к рублю, если успешно, иначе 0.0.
     """
-    Конвертирует сумму транзакции в рубли, учитывая структуру с operationAmount.
-    """
-    operation_amount = transaction.get("operationAmount", {})
-    amount = operation_amount.get("amount", 0)
-    currency_info = operation_amount.get("currency", {})
-    currency_code = currency_info.get("code")
-
-    if currency_code == "RUB":
-        return float(amount)
-    elif currency_code in ("USD", "EUR"):
-        rate = get_exchange_rate(currency_code)
-        return float(amount) * rate
-    else:
-        # Неизвестная валюта
+    url = f'https://api.exchangerate-api.com/v4/latest/{currency_code}'
+    response = requests.get(url)
+    if response.status_code != 200:
         return 0.0
+    data = response.json()
+    return data['rates'].get('RUB', 0.0)

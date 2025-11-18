@@ -1,5 +1,5 @@
-import os
-from unittest.mock import patch
+import json
+from unittest.mock import patch, mock_open
 
 
 # Предположим, что эти функции у вас реализованы где-то в коде
@@ -32,29 +32,31 @@ def convert_currency(transaction):
         return 0.0
 
 
-# Тест для функции чтения JSON
+# Тесты
 def test_read_transactions_json_valid():
-    data = read_transactions('data/operations.json')
-    assert isinstance(data, list)
+    mock_data = [{"id": 1}, {"id": 2}]
+    with patch("builtins.open", mock_open(read_data=json.dumps(mock_data))) as mock_file:
+        data = read_transactions('some_path.json')
+        mock_file.assert_called_once_with('some_path.json', 'r', encoding='utf-8')
+        assert isinstance(data, list)
+        assert data == mock_data
 
 
 def test_read_transactions_json_invalid():
-    data = read_transactions('invalid_path.json')
-    assert data == []
+    # Имитация исключения при открытии файла
+    with patch("builtins.open", side_effect=FileNotFoundError):
+        data = read_transactions('invalid_path.json')
+        assert data == []
 
 
 def test_read_transactions_json_not_list():
-    # Создаем папку, если ее нет
-    os.makedirs('data', exist_ok=True)
-    filename = 'data/test_invalid.json'
-    # Создаем файл с некорректными данными
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write('{"not": "list"}')
-    result = read_transactions(filename)
-    assert result == []
+    # Возвращаем JSON, который не является списком
+    with patch("builtins.open", mock_open(read_data=json.dumps({"not": "list"}))) as mock_file:
+        data = read_transactions('some_path.json')
+        mock_file.assert_called_once_with('some_path.json', 'r', encoding='utf-8')
+        assert data == []
 
 
-# Тест для функции конвертации валют
 @patch('src.external_api.get_exchange_rate')
 def test_convert_currency_usd_eur(mock_get_rate):
     mock_get_rate.return_value = 75.0

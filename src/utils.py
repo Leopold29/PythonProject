@@ -1,6 +1,10 @@
 import json
 from typing import Any, Dict, List
 
+from src.log_config import setup_logger
+
+logger = setup_logger(__name__)
+
 
 def read_transactions(file_path: str) -> List[Dict[str, Any]]:
     """
@@ -17,8 +21,11 @@ def read_transactions(file_path: str) -> List[Dict[str, Any]]:
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
+            logger.info(f"Чтение файла {file_path}")
             if not isinstance(data, list):
+                logger.warning("Данные не являются списком")
                 return []
             return data
-    except (FileNotFoundError, json.JSONDecodeError):
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        logger.error(f"Ошибка при чтении файла {file_path}: {e}")
         return []

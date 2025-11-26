@@ -11,10 +11,12 @@
 ```
 git clone https://github.com/Leopold29/PythonProject
 ```
+
 2. Установите зависимости:
 ```
 pip install -r requirements.txt
 ```
+
 ## Использование:
 
 1. Откройте приложение в вашем веб-браузере.
@@ -41,26 +43,29 @@ pip install -r requirements.txt
 ### Примеры использования:
 ```
 from src import generators
-
 transactions = [...]  # ваш список транзакций
 ```
+
 ### Фильтрация транзакций по валюте USD
 ```
 usd_transactions = generators.filter_by_currency(transactions, "USD")
 for t in usd_transactions:
     print(t)
 ```
+
 ### Получение описаний транзакций
 ```
 descriptions = generators.transaction_descriptions(transactions)
 for desc in descriptions:
     print(desc)
 ```
+
 ### Генерация номеров карт в диапазоне
 ```
 for card in generators.card_number_generator(1, 3):
     print(card)
 ```
+
 ## Тестирование:
 
 Для запуска тестов используйте следующую команду:
@@ -80,13 +85,13 @@ coverage html
 ## Пример использования:
 ```
 from src.decorators import log
-
 @log(filename="app.log", log_time=True, log_level="ALL")
 def process_data(data):
     pass
 ```
+
 ## Как это работает:
 
-filename: путь к файлу логов (если не указан — лог в консоль)
-log_time: добавлять ли временную метку
-log_level: уровень логирования (ALL, ERROR, SUCCESS)
+### filename: путь к файлу логов (если не указан — лог в консоль)
+### log_time: добавлять ли временную метку
+### log_level: уровень логирования (ALL, ERROR, SUCCESS)

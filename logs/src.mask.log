@@ -1,0 +1,17 @@
+2025-11-26 11:34:07,082 - src.mask - DEBUG - Masking account number: 73654108430135874305
+2025-11-26 11:34:07,082 - src.mask - DEBUG - Masking card number: 7000792289606361
+2025-11-26 11:34:07,082 - src.mask - INFO - Masked card: 7000 79** **** 6361
+2025-11-26 11:34:07,095 - src.mask - DEBUG - Masking card number: 7000792289606361
+2025-11-26 11:34:07,095 - src.mask - INFO - Masked card: 7000 79** **** 6361
+2025-11-26 11:34:07,096 - src.mask - DEBUG - Masking card number: 1234567812345678
+2025-11-26 11:34:07,096 - src.mask - INFO - Masked card: 1234 56** **** 5678
+2025-11-26 11:34:07,096 - src.mask - DEBUG - Masking card number: 7000792289606361
+2025-11-26 11:34:07,097 - src.mask - INFO - Masked card: 7000 79** **** 6361
+2025-11-26 11:34:07,097 - src.mask - DEBUG - Masking card number: 123456789012345
+2025-11-26 11:34:07,097 - src.mask - ERROR - Длина номера карты меньше 16 символов
+2025-11-26 11:34:07,098 - src.mask - DEBUG - Masking card number: 
+2025-11-26 11:34:07,098 - src.mask - ERROR - Длина номера карты меньше 16 символов
+2025-11-26 11:34:07,099 - src.mask - DEBUG - Masking card number: 12345678901234
+2025-11-26 11:34:07,099 - src.mask - ERROR - Длина номера карты меньше 16 символов
+2025-11-26 11:34:07,099 - src.mask - DEBUG - Masking account number: 73654108430135874305
+2025-11-26 11:34:07,100 - src.mask - DEBUG - Masking account number: 1234567890123456

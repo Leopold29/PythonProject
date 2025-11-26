@@ -1,5 +1,6 @@
-from src.log_config import setup_logger
 from typing import Union
+
+from src.log_config import setup_logger
 
 logger = setup_logger(__name__)
 

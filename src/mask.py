@@ -1,4 +1,7 @@
+from src.log_config import setup_logger
 from typing import Union
+
+logger = setup_logger(__name__)
 
 
 def get_mask_card_number(card_number: Union[int, str]) -> str:
@@ -8,8 +11,10 @@ def get_mask_card_number(card_number: Union[int, str]) -> str:
     Остальные заменены на звёздочки.
     """
     number_str = str(card_number).replace(" ", "")
+    logger.debug(f"Masking card number: {number_str}")
 
     if len(number_str) < 16:
+        logger.error("Длина номера карты меньше 16 символов")
         raise ValueError("Неверная длина номера карты")
 
     first_four = number_str[:4]
@@ -17,6 +22,7 @@ def get_mask_card_number(card_number: Union[int, str]) -> str:
     last_four = number_str[-4:]
 
     masked_card = f"{first_four} {next_two}** **** {last_four}"
+    logger.info(f"Masked card: {masked_card}")
     return masked_card
 
 
@@ -27,6 +33,7 @@ def get_mask_account(account_number: Union[int, str]) -> str:
     """
     number_str = str(account_number).replace(" ", "")
     last_four = number_str[-4:]
+    logger.debug(f"Masking account number: {number_str}")
     return f"**{last_four}"
 
 

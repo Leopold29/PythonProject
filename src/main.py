@@ -1,6 +1,36 @@
-from src.stats import process_bank_operations
+from datetime import datetime
+
 from src.search import process_bank_search
 from src.utils import read_transactions
+
+
+def get_valid_status() -> str:
+    valid_statuses = ['EXECUTED', 'CANCELED', 'PENDING']
+    while True:
+        status = input(
+            "Введите статус, по которому необходимо выполнить фильтрацию:\n"
+            "Доступные для фильтрации статусы: EXECUTED, CANCELED, PENDING\n"
+        ).upper()
+        if status in valid_statuses:
+            return status
+        else:
+            print(f"Статус операции \"{status}\" недоступен.")
+
+
+def sort_transactions_by_date(transactions: list, ascending: bool = True) -> list:
+    """Сортирует список транзакций по дате."""
+
+    def parse_date(date_str: str):
+        try:
+            return datetime.strptime(date_str, '%Y-%m-%d')
+        except ValueError:
+            return datetime.min  # Для некорректных дат
+
+    return sorted(
+        transactions,
+        key=lambda t: parse_date(t.get('date', '')),
+        reverse=not ascending
+    )
 
 
 def main():
@@ -22,54 +52,46 @@ def main():
             return
 
         # Запрос фильтрации по статусу
-        valid_statuses = ['EXECUTED', 'CANCELED', 'PENDING']
-        status = ''
-        while True:
-            status = input("Введите статус, по которому необходимо выполнить фильтрацию:\nДоступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\n").upper()
-            if status in valid_statuses:
-                break
-            else:
-                print(f"Статус операции \"{status}\" недоступен.")
+        status = get_valid_status()
 
         # Фильтрация по статусу
         filtered_transactions = [t for t in transactions if t.get('status', '').upper() == status]
-        print(f"Операции отфильтрованы по статусу \"{status}\"")
+        print(f"Операции отфильтрованы по статусу \"{status}\".")
+
         # Сортировка по дате
         sort_order = input("Отсортировать операции по дате? Да/Нет\n").lower()
         if sort_order == 'да':
-            reverse_order = False
             order_type = input("Отсортировать по возрастанию или по убыванию?\n").lower()
-            if 'убыва' in order_type:
-                reverse_order = True
-            filtered_transactions.sort(key=lambda x: x.get('date', ''), reverse=reverse_order)
+            ascending = 'убыва' not in order_type
+            filtered_transactions = sort_transactions_by_date(filtered_transactions, ascending=ascending)
 
         # Фильтр по валюте
         currency_filter = input("Выводить только рублевые транзакции? Да/Нет\n").lower()
         if currency_filter == 'да':
-            filtered_transactions = [t for t in filtered_transactions if t.get('currency', '') == 'RUB']
+            filtered_transactions = [t for t in filtered_transactions if t.get('currency', '').upper() == 'RUB']
 
         # Фильтр по слову в описании
-        search_word = ''
         filter_word = input("Отфильтровать список транзакций по определенному слову в описании? Да/Нет\n").lower()
         if filter_word == 'да':
             search_word = input("Введите слово для поиска:\n")
             filtered_transactions = process_bank_search(filtered_transactions, search_word)
 
-        # Вывод итоговых операций
+        # ВЫВОД итоговых операций
         if not filtered_transactions:
-            print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
+            print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации.")
         else:
             print("Распечатываю итоговый список транзакций...")
-            print(f"Всего банковских операций в выборке: {len(filtered_transactions)}")
+            print(f"Всего банковских операций в выборке: {len(filtered_transactions)}\n")
             for t in filtered_transactions:
-                date = t.get('date', '')
+                date_str = t.get('date', '')
                 description = t.get('description', '')
                 amount = t.get('amount', '')
                 currency = t.get('currency', '')
-                print(f"{date} {description}\nСумма: {amount} {currency}")
-
+                print(f"{date_str} {description}")
+                print(f"Сумма: {amount} {currency}\n")
     else:
         print("Функциональность для выбранного варианта еще не реализована.")
+
 
 if __name__ == "__main__":
     main()
